@@ -1,8 +1,46 @@
-const { Telegraf, Markup } = require('telegraf')
+const { Telegraf, Markup, Extra } = require('telegraf')
 
 const token = '6541592721:AAETiGpRb7BoaNybSAEJLq_wQAd2DUiZ6_E'
 
 const bot = new Telegraf(token)
+
+bot.command('start', (ctx) => {
+    ctx.reply('Привет!', {
+        reply_markup: Markup.inlineKeyboard([
+            [Markup.callbackButton('Далее', 'next')],
+        ])
+    })
+})
+
+// Более эстетичнее выглядит
+// bot.command('start', (ctx) => {
+//     ctx.reply('Привет! <b>Как дела?</b> https://youtube.com/', Extra.markup(
+//         Markup.inlineKeyboard([
+//             [Markup.callbackButton('Далее', 'next')],
+//         ])
+//     ).HTML().webPreview(false))
+// })
+
+
+bot.action('next', (ctx) => {
+    ctx.editMessageText('Как дела?', {
+        reply_markup: Markup.inlineKeyboard([
+            [Markup.callbackButton('Хорошо', 'good'), Markup.callbackButton('Плохо', 'bad')],
+            [Markup.callbackButton('Удалить сообщение', 'delete')],
+        ])
+    })
+})
+
+bot.action('good', (ctx) => {
+    ctx.editMessageText('Отлично!')
+})
+bot.action('bad', (ctx) => {
+    ctx.editMessageText('Плохо... Почему так?')
+})
+
+bot.action('delete', (ctx) => {
+    ctx.deleteMessage()
+})
 
 // ==========
 
@@ -52,21 +90,21 @@ const bot = new Telegraf(token)
 //     //             ctx.reply('Ничего')
 // })
 
-bot.hears('Кнопка', (ctx) => {
-    ctx.reply('Общая для 1 и 2')
-})
+// bot.hears('Кнопка', (ctx) => {
+//     ctx.reply('Общая для 1 и 2')
+// })
 
-bot.hears('№1', (ctx) => {
-    ctx.reply('n1')
-})
+// bot.hears('№1', (ctx) => {
+//     ctx.reply('n1')
+// })
 
-bot.hears('№2', (ctx) => {
-    ctx.reply('n2')
-})
+// bot.hears('№2', (ctx) => {
+//     ctx.reply('n2')
+// })
 
-bot.on('text', (ctx) => {
-    ctx.reply('что то написали')
-})
+// bot.on('text', (ctx) => {
+//     ctx.reply('что то написали')
+// })
 
 // ==========
 
